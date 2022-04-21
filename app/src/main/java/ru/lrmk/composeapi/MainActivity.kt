@@ -60,7 +60,10 @@ class MainActivity : ComponentActivity() {
                                     lesson = it
                                     prefs.edit().putString(pref, it.name).apply()
                                 }) {
-                                    RadioButton(lesson == it, onClick = {})
+                                    RadioButton(lesson == it, onClick = {
+                                        lesson = it
+                                        prefs.edit().putString(pref, it.name).apply()
+                                    })
                                     Spacer(Modifier.width(10.dp))
                                     Text(it.Title)
                                 }

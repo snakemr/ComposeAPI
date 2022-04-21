@@ -11,14 +11,14 @@ enum class Lessons(val Title: String, val Sample: @Composable (Api)->Unit) {
     L3("Три", {})
 }
 
-private operator fun <T> T.unaryPlus() = mutableStateOf(this)
-
-@Composable
-private inline fun <T> r(calc: @DisallowComposableCalls () -> T): T = remember(calc)
-
 @Composable
 fun DoLesson(lesson: Lessons, api: Api) = when(lesson) {
     Lessons.L1 -> Lesson01(TP())
     Lessons.L2 -> {}
     Lessons.L3 -> {}
 }
+
+private operator fun <T> T.unaryPlus() = mutableStateOf(this)
+
+@Composable
+private inline fun <T> r(calc: @DisallowComposableCalls () -> T): T = remember(calc)
