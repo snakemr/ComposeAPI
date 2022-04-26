@@ -1,6 +1,7 @@
 package ru.lrmk.composeapi.api
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import coil.compose.rememberImagePainter
 
 class Api {
@@ -21,7 +22,15 @@ class Api {
     suspend fun weather(query: String) = weather.weather(query)
     suspend fun weather(lat: Float, lon: Float) = weather.weather(lat, lon)
 
+    private val kladr = KladrApi.getAPI()
+    suspend fun federalDistricts() = kladr.federalDistricts().mapNotNull { it.federal_district }
+    suspend fun regions(federalDistrict: String? = null) = kladr.regions(federalDistrict)
+    suspend fun cities(region: Long? = null) = kladr.cities(region)
+    suspend fun city(city: Long) = kladr.city(city)
+
     companion object {
+        fun video(key: String) = "https://mad.lrmk.ru/medialibrary/video/$key.mp4"
+
         @Composable fun image(poster: String) =
             rememberImagePainter("https://mad.lrmk.ru/medialibrary/small/$poster")
 

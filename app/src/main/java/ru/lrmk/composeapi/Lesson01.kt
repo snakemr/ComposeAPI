@@ -25,5 +25,7 @@ fun Lesson01(spiderMan: TP) {
     
     Чтобы переключатель был не посередине экрана, заключите всё внутрь блока Box { ... }
     
+    Чтобы фон был чёрным, установите для Box параметр Modifier.background(Color.Black)
+    
     """.trimIndent())
 }

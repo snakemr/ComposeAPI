@@ -10,7 +10,7 @@ class TP(
     val tralerURL: String = "V0hagz_8L3M"
 ) {
     @Composable
-    fun Poster() = Image(Api.image(posterURL), contentDescription = "", Modifier.fillMaxSize())
+    fun Poster() = Image(Api.bigImage(posterURL), contentDescription = "", Modifier.fillMaxSize())
     @Composable
-    fun Trailer() = YouTube(tralerURL)
+    fun Trailer() = VideoPlayer(Api.video(tralerURL)) //YouTube(tralerURL)
 }
