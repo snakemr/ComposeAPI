@@ -17,8 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import ru.lrmk.composeapi.api.Api
 import ru.lrmk.composeapi.api.DoLesson
@@ -50,7 +48,7 @@ class MainActivity : ComponentActivity() {
                     Box(Modifier
                         .align(Alignment.TopEnd)
                         .clip(CircleShape)
-                        .background(Color.LightGray)
+                        .background(MaterialTheme.colors.secondary)
                     ) {
                         var expanded by remember { mutableStateOf(false) }
                         IconButton(onClick = { expanded = true }) {

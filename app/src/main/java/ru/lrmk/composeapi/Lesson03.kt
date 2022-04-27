@@ -14,9 +14,11 @@ import ru.lrmk.composeapi.api.Price
 
 @Composable
 fun Lesson03(price: List<Price>) {
+    // price - список из 100 наименований товара.
+    // Состоит из объектов Price, где .name - название товара (строка), .cost - цена (целое число)
     LazyColumn {
         items(price) {
-            Row(Modifier.padding(10.dp).height(42.dp)) {
+            Row(Modifier.padding(5.dp).height(42.dp)) {
                 Text(it.name, Modifier.weight(1f))
                 Text(it.cost.toString())
             }

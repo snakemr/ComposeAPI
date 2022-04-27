@@ -6,6 +6,7 @@ import ru.lrmk.composeapi.api.TP
 
 @Composable
 fun Lesson01(spiderMan: TP) {
+    // spiderMan - тренировочный объект, который может отображать свой .Trailer() либо .Poster()
     Text("""
     Урок 1. Вывод на экран по условию  
       

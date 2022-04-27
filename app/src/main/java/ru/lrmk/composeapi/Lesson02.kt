@@ -12,10 +12,12 @@ import androidx.compose.ui.unit.dp
 import ru.lrmk.composeapi.api.Price
 
 @Composable
-fun Lesson02(price: List<String>) {
+fun Lesson02(cities: List<String>) {
+    // cities - список названий городов Ставропольского края. Состоит из строк.
+
     Column {
-        price.forEach {
-            Text(it, Modifier.padding(10.dp))
+        cities.forEach {
+            Text(it, Modifier.padding(5.dp))
             Divider()
         }
     }

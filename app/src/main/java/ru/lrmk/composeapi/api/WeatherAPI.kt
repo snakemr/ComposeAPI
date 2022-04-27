@@ -1,5 +1,6 @@
 package ru.lrmk.composeapi.api
 
+import com.google.gson.annotations.SerializedName
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -25,7 +26,7 @@ internal interface WeatherAPI {
     }
 }
 
-class Weather(
+data class Weather(
     val base: String = "",
     val clouds: Clouds = Clouds(0),
     val cod: Int = 0,
@@ -41,16 +42,16 @@ class Weather(
     val weather: List<Weather> = listOf(),
     val wind: Wind = Wind(0,0.0)
 ) {
-    class Clouds(
+    data class Clouds(
         val all: Int
     )
 
-    class Coord(
+    data class Coord(
         val lat: Double,
         val lon: Double
     )
 
-    class Main(
+    data class Main(
         val feels_like: Double,
         val humidity: Int,
         val pressure: Int,
@@ -59,11 +60,12 @@ class Weather(
         val temp_min: Double
     )
 
-    class Rain(
-        val `1h`: Double
+    data class Rain(
+        @SerializedName("1h")
+        val mm: Double
     )
 
-    class Sys(
+    data class Sys(
         val country: String,
         val id: Int,
         val sunrise: Long,
@@ -71,14 +73,14 @@ class Weather(
         val type: Int
     )
 
-    class Weather(
+    data class Weather(
         val description: String,
         val icon: String,
         val id: Int,
         val main: String
     )
 
-    class Wind(
+    data class Wind(
         val deg: Int,
         val speed: Double
     )

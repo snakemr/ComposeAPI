@@ -1,8 +1,9 @@
 package ru.lrmk.composeapi.api
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import coil.compose.rememberImagePainter
+import java.text.SimpleDateFormat
+import java.util.*
 
 class Api {
     private val cinema = MediaAPI.getAPI()
@@ -28,6 +29,9 @@ class Api {
     suspend fun cities(region: Long? = null) = kladr.cities(region)
     suspend fun city(city: Long) = kladr.city(city)
 
+    private val login = LoginAPI.getAPI()
+    suspend fun login(name: String, pass: String) = login.login(name, pass)
+
     companion object {
         fun video(key: String) = "https://mad.lrmk.ru/medialibrary/video/$key.mp4"
 
@@ -37,7 +41,10 @@ class Api {
         @Composable fun bigImage(poster: String) =
             rememberImagePainter("https://mad.lrmk.ru/medialibrary/image/$poster")
 
-        @Composable fun icon(weather: String) =
-            rememberImagePainter("https://mad.lrmk.ru/weather/image/$weather")
+        @Composable fun icon(weatherIcon: String?) =
+            rememberImagePainter(weatherIcon?.let { "https://mad.lrmk.ru/weather/image/$it" })
+
+        fun time(seconds: Long? = null) = SimpleDateFormat("HH:mm:ss", Locale("RU"))
+            .format(Date(seconds?.let{ it * 1000 } ?: Calendar.getInstance().timeInMillis))
     }
 }
