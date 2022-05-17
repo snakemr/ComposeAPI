@@ -1,12 +1,10 @@
 package ru.lrmk.composeapi.api
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -17,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.launch
@@ -35,9 +34,18 @@ enum class Lessons(val Title: String, val Sample: @Composable (Api)->Unit) {
             R{C{Text("💧влажность ${w.main.humidity}%");Text("📩 давление ${w.main.pressure} гПа");Text("🌥 облачность ${w.clouds.all}%");Text("☔ осадки ${w.rain.mm} мм/час");Text("👓 видимость ${w.visibility} м")}
             Column(M.weight(1f),horizontalAlignment=Alignment.CenterHorizontally){Text("⬆",M.rotate(-w.wind.deg.toFloat()), fontSize = 42.sp);Text("💨 ветер ${w.wind.speed} м/с ")}}}}),
     L6("6. Форма ввода", {val s = rememberCoroutineScope();var t by r{mutableStateOf(0)};var e by r{+""};var n by r{+""};var p by r{+""};Box(M.fillMaxSize()){if (t>0)
-            Text("Успех!",M.align(Alignment.Center),color=Color.Gray,fontSize=18.sp) else C(M.align(Alignment.Center).width(IntrinsicSize.Min)){Text("АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ",color=Color.Gray,fontSize=18.sp);Text(e,color=Color.Red)
+            Text("Успех!",M.align(Alignment.Center),color=Color.Gray,fontSize=18.sp) else C(M.align(Alignment.Center)
+            .width(IntrinsicSize.Min)){Text("АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ",color=Color.Gray,fontSize=18.sp);Text(e,color=Color.Red)
             OutlinedTextField(n,{n=it},label={Text("Имя пользователя")});OutlinedTextField(p,{p=it}, label={Text("Пароль")},visualTransformation=PasswordVisualTransformation())
-            Button({s.launch{it.login(n,p).let {t=it.token;e=it.error?:""}}},Modifier.fillMaxWidth().clip(CircleShape)){Text("Вход в систему")}}}})
+            Button({s.launch{it.login(n,p).let {t=it.token;e=it.error?:""}}},Modifier.fillMaxWidth().clip(CircleShape)){Text("Вход в систему")}}}}),
+    @OptIn(ExperimentalFoundationApi::class)
+    L7("7. Сетка эскизов", {ps(Movies()){value=it.movies()}.value.results.let{G(M.background(Color.Black)){items(it){Image(Api.image(it.poster_path),null,M.size(200.dp))}}}}),
+    @OptIn(ExperimentalFoundationApi::class)
+    L8("8. Детали фильма", {var id by r{mutableStateOf(0)};if(id!=0){BackHandler{id=0};ps(Movie()){value=it.movie(id)}.value.let {Column {Text(it.title,maxLines=1,fontSize=18.sp)
+            Row {Image(Api.bigImage(it.poster_path),null,M.weight(1f));LazyColumn(Modifier.padding(10.dp)){if (it.production_companies!=null)items(it.production_companies){if(it.logo_path!=null)Image(Api.image(it.logo_path),null,M.size(64.dp))}
+            if(it.production_countries!=null)items(it.production_countries){Image(Api.flag(it.iso_3166_1),null,M.size(64.dp))};item{Text(Api.year(it.release_date),M.size(64.dp),textAlign=TextAlign.Center)}}};Text(it.overview, M.verticalScroll(rememberScrollState()))}}
+            }else ps(Movies()){value=it.movies()}.value.results.let{G(M.background(Color.Black)){items(it){Box {Image(Api.image(it.poster_path),null,M.size(200.dp).clickable{id=it.id})
+            Text(it.vote_average.toString(),M.align(Alignment.TopEnd).background(Brush.radialGradient(listOf(Color.Black,Color.Black,Color.Transparent))).padding(5.dp),color=Color.White)}}}}})
 }
 
 @Composable
@@ -60,6 +68,14 @@ fun DoLesson(lesson: Lessons, api: Api) = when(lesson) {
             }
         }
     }
+    Lessons.L7 -> Lesson07(ps(Movies()) { value = api.movies() }.value.results)
+    Lessons.L8 -> {
+        var id by r { mutableStateOf(0) }
+        if (id != 0) {
+            BackHandler { id = 0 }
+            MovieDetails(ps(Movie()) { value = api.movie(id) }.value)
+        } else Lesson08(ps(Movies()) { value = api.movies() }.value.results) { id = it }
+    }
 }
 
 private operator fun <T> T.unaryPlus() = mutableStateOf(this)
@@ -79,3 +95,6 @@ private fun <T> l(): List<T> = listOf()
 @Composable private fun R(modifier: Modifier = Modifier, content: @Composable RowScope.() -> Unit) = Row(modifier, content = content)
 @Composable private fun C(modifier: Modifier = Modifier, content: @Composable ColumnScope.() -> Unit) = Column(modifier, content = content)
 private val M = Modifier
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable private fun G(modifier: Modifier = Modifier, content: LazyGridScope.() -> Unit) = LazyVerticalGrid(GridCells.Adaptive(120.dp), modifier, content = content)

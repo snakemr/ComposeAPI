@@ -1,7 +1,12 @@
 package ru.lrmk.composeapi.api
 
 import androidx.compose.runtime.Composable
-import coil.compose.rememberImagePainter
+import androidx.compose.runtime.State
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import coil.size.Scale
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -44,7 +49,24 @@ class Api {
         @Composable fun icon(weatherIcon: String?) =
             rememberImagePainter(weatherIcon?.let { "https://mad.lrmk.ru/weather/image/$it" })
 
+        @Composable fun flag(countryCode: String) =
+            rememberImagePainter("https://mad.lrmk.ru/images/flags/" +
+                    countryCode.lowercase() + ".png")
+
+        @Composable
+        private fun rememberImagePainter(url: String?) = rememberAsyncImagePainter(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(url)
+                .crossfade(true)
+                .build()
+        )
+
         fun time(seconds: Long? = null) = SimpleDateFormat("HH:mm:ss", Locale("RU"))
             .format(Date(seconds?.let{ it * 1000 } ?: Calendar.getInstance().timeInMillis))
+
+        fun year(date: Date) = GregorianCalendar().run {
+            time = date
+            get(Calendar.YEAR).toString()
+        }
     }
 }

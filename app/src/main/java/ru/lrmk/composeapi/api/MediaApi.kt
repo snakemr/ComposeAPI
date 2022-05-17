@@ -53,17 +53,17 @@ class Movies(
 )
 
 data class Movie(
-    val id: Int,
-    val title: String,
-    val vote_average: Double,
-    val overview: String,
-    val poster_path: String,
-    val backdrop_path: String,
-    val genres: List<Genre>,
-    val production_countries: List<Country>,
-    val production_companies: List<Company>,
-    val release_date: Date,
-    val videos: Videos
+    val id: Int = 0,
+    val title: String = "",
+    val vote_average: Double = 0.0,
+    val overview: String = "",
+    val poster_path: String = "",
+    val backdrop_path: String = "",
+    val genres: List<Genre>? = null,
+    val production_countries: List<Country>? = null,
+    val production_companies: List<Company>? = null,
+    val release_date: Date = Date(),
+    val videos: Videos = Videos()
 )
 
 data class Country(
@@ -72,7 +72,7 @@ data class Country(
 )
 
 data class Company(
-    val logo_path: String,
+    val logo_path: String?,
     val name: String
 )
 

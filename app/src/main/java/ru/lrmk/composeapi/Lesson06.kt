@@ -20,6 +20,7 @@ fun Lesson06(session: Int, error: String, login: (name:String,pass:String)->Unit
     // если он больше 0, то поздравить пользователя с успешной авторизацией
     // error - сообщение об ошибке. если эта строка не пуста, её надо отобразить над формой
     // login - функция, которую надо вызвать по нажатию кнопки "Вход в систему"
+
     var name by remember { mutableStateOf("")  }    // переменная для ввода имени пользователя
     var pass by remember { mutableStateOf("")  }    // переменная для ввода пароля
     Box(Modifier.fillMaxSize()) {
