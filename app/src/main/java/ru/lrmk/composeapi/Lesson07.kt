@@ -27,20 +27,24 @@ import ru.lrmk.composeapi.api.Movie
 fun Lesson07(movies: List<Movie>) {
     // movies - список фильмов Movie, где poster_path - имя файла постера к фильму.
     // Функция Api.image(it.poster_path) получит для вас заполнитель для картинки Image
+    // Информацию предоставляет сайт https://www.themoviedb.org/ (возможны проблемы с доступом)
 
-    LazyVerticalGrid(GridCells.Adaptive(120.dp), Modifier.background(Color.Black)) {
-        items(movies) {
-            Box {
-                Image(Api.image(it.poster_path), null, Modifier.size(200.dp))
-                Text(it.vote_average.toString(), Modifier.align(Alignment.TopEnd).background(
-                    Brush.radialGradient(
-                        colors = listOf(
-                            Color.Black,
-                            Color.Black,
-                            Color.Transparent
-                        )
-                    )).padding(5.dp), color = Color.White)
-            }
-        }
-    }
+    Text("""Урок 7. Сетка эскизов с постерами фильмов
+        
+        movies - список текущих фильмов кинопроката. Каждый его элемент содержит poster_path - имя изображения.
+          
+        Вместо LazyColumn используем теперь LazyVerticalGrid(GridCells.Adaptive(120.dp)){...}
+        
+        Это экспериментальный пока что элемент отображения сетки. Ширину 120 мы указали как минимальную ширину эскиза.
+        
+        Ещё добавьте ему Modifier.background(Color.Black) - чёрный фон экрана.
+        
+        Как обычно, функция items(...){...} внутри сетки перечисляет элементы списка movies.
+         
+        Внутри - только картинка Image, первый параметр для неё берём из функции Api.image(it.poster_path)
+        вторым будет "постер" или "" или null, третьим укажите размер эскиза Modifier.size(200.dp) 
+        
+        Можете поэкспериментировать с другими значениями размера и ширины - это будет влиять на количество столбцов сетки.
+    """.trimIndent())
+
 }

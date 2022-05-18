@@ -23,19 +23,28 @@ fun Lesson06(session: Int, error: String, login: (name:String,pass:String)->Unit
 
     var name by remember { mutableStateOf("")  }    // переменная для ввода имени пользователя
     var pass by remember { mutableStateOf("")  }    // переменная для ввода пароля
-    Box(Modifier.fillMaxSize()) {
-        if (session > 0)
-            Text("Успех!", Modifier.align(Alignment.Center), color = Color.Gray, fontSize = 18.sp)
-        else Column(Modifier.align(Alignment.Center).width(IntrinsicSize.Min)){
-            Text("АВТОРИЗАЦИЯ ПОЛЬЗОВАТЕЛЯ", color = Color.Gray, fontSize = 18.sp)
-            Text(error, color = Color.Red)
-            OutlinedTextField(name, { name = it }, label = { Text("Имя пользователя") })
-            OutlinedTextField(pass, { pass = it }, label = { Text("Пароль") } ,
-                visualTransformation = PasswordVisualTransformation())
-            Button(onClick = { login(name, pass) }, Modifier.fillMaxWidth().clip(CircleShape)) {
-                Text("Вход в систему")
-            }
-        }
-    }
+
+    Text("""Урок 6. Форма ввода пароля
+        
+        Всё будет внутри Box(Modifier.fillMaxSize()) {...} чтобы форма появлялась по центру экрана.
+         
+        Если session>0, то отобразить в Text сообщение "Успех", Modifier.align(Alignment.Center) - по центру,          
+        иначе отобразить Column(...){...} c двумя модификаторами:
+        Modifier.align(Alignment.Center).width(IntrinsicSize.Min) первый - по центру, второй - чтобы кнопка не растянулась на всю ширину.
+        
+        Внутри - серый Text заголовка формы, красный Text для строки error, два поля ввода и кнопка.
+        
+        Для перврго поля ввода OutlinedTextField параметры будут: name, {name=it} и label={Text("...")}
+        для второго - аналогично с переменной pass, но добавить четвёртый, чтобы скрыть ввод символов: visualTransformation = PasswordVisualTransformation())
+        
+        Кнопка Button должна вызывать функцию login, передав в неё name и pass. 
+        
+        Дайте кнопке модификаторы, чтобы растянуть её на ширину формы и скруглить края:  
+        Modifier.fillMaxWidth().clip(CircleShape)
+        
+        В блоке {...} элемента Button будет простой Text с надписью для кнопки.
+        
+        Для проверки: имя - aas, пароль - 123""".trimIndent())
+
 }
 

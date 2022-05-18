@@ -26,32 +26,31 @@ fun Lesson08(movies: List<Movie>, onSelect: (Int)->Unit) {
     // id - идентификатор фильма для перехода по ссылке, vote_average - оценка зрителей
     // Функция Api.image(it.poster_path) получит для вас постер для картинки Image
     // onSelect - функция, которую надо вызвать при щелчке на постере, указав его id
-    
-    LazyVerticalGrid(GridCells.Adaptive(120.dp), Modifier.background(Color.Black)) {
-        items(movies) {
-            Box {
-                Image(Api.image(it.poster_path), null,
-                    Modifier
-                        .size(200.dp)
-                        .clickable {
-                            onSelect(it.id)
-                        })
-                Text(it.vote_average.toString(),
-                    Modifier
-                        .align(Alignment.TopEnd)
-                        .background(
-                            Brush.radialGradient(
-                                colors = listOf(
-                                    Color.Black,
-                                    Color.Black,
-                                    Color.Transparent
-                                )
-                            )
-                        )
-                        .padding(5.dp), color = Color.White)
-            }
-        }
-    }
+
+    Text("""Урок 8. Подробные сведения о фильме
+        
+        Эта часть почти повторяет прошлый урок, можно скопировать оттуда. Два отличия:
+        
+        По щелчку на картинке должны открываться сведения о фильме. Добавьте к Modifier картинки
+        .clickable{...} который должен вызвать функцию onSelect(...) с указанием it.id фильма
+        
+        Также покажем поверх постера зрительский рейтинг. Для этого:
+        сначала внесите ваш Image внутрь нового блока Box{...}. Это позволяет отображать элементы один поверх другого.
+        добавьте после картинки Text, в котором отобразите it.vote_average (это не строка, надо преобразовать)
+        
+        Чтобы перенести рейтинг в правый верхний угол постера добавьте этому элементу
+        Modifier.align(Alignment.TopEnd)
+        
+        Чтобы цифры не сливались с фоном, добавьте к 
+        Modifier подложку .background(...), в ней можно указать или сплошной цвет, или полупрозрачный
+        Brush.radialGradient(
+        listOf(Color.Black,Color.Black,Color.Transparent))
+        
+        Еще добавьте к этому же Modifier отступы: 
+        .padding(5.dp)
+        
+        Если надо, задайте цвет цифр: color = Color.White""".trimIndent())
+
 }
 
 @Composable
@@ -61,28 +60,30 @@ fun MovieDetails(movie: Movie) {
     // production_companies - список компаний производителей
     // production_countries - список стран, участвующих в съёмках
     // Функция Api.bigImage(movie.poster_path) получит качественный постер для картинки Image
-    // Функция Api.image(company.logo_path) получит логотип компании для картинки Image
-    // Функция Api.flag(country.iso_3166_1) получит флаг страны для картинки Image
+    // Функция Api.image(it.logo_path) получит логотип компании для картинки Image
+    // Функция Api.flag(it.iso_3166_1) получит флаг страны для картинки Image
     // Списки production_companies, production_countries и строку logo_path нужно обязательно
     // проверить на неравенство null, прежде чем пытаться выводить их на экран
 
-    Column {
-        Text(movie.title, maxLines = 1, fontSize = 18.sp)
-        Row {
-            Image(Api.bigImage(poster = movie.poster_path), null, Modifier.weight(1f))
-            LazyColumn(Modifier.padding(10.dp)) {
-                if (movie.production_companies != null) items(movie.production_companies) {
-                    if (it.logo_path != null)
-                        Image(Api.image(poster = it.logo_path), null, Modifier.size(64.dp))
-                }
-                if (movie.production_countries != null) items(movie.production_countries) {
-                    Image(Api.flag(countryCode = it.iso_3166_1), null, Modifier.size(64.dp))
-                }
-                item {
-                    Text(Api.year(movie.release_date), Modifier.size(64.dp), textAlign = TextAlign.Center)
-                }
-            }
-        }
-        Text(movie.overview, Modifier.verticalScroll(rememberScrollState()))
-    }
+    Text("""Детальные сведения о фильме id=${movie.id}
+        
+        movie - объект сведений о фильме (подробности в комментарии). Все элементы - внутри Column{...}
+        
+        Первая строка - Text для вывода названия,
+        затем - Row{...} для размещения по горизонтали постера и списка компаний,
+        последняя строка - Text для вывода описания фильма, для прокрутки длинного текста используйте
+        Modifier.verticalScroll(rememberScrollState())
+        
+        Внутри Row поместите Image, постер для которой вам даст Api.bigImage(movie.poster_path),
+        и LazyColumn. Чотбы Image растянулся почти на всю ширину, укажите ему Modifier.weight(1f), а столбцу задайте оступы Modifier.padding(10.dp)
+        
+        Внутри LazyColumn - три набора элементов:
+        если production_companies не null, то items(){}, перечисляющая компании,
+        если production_countries не null, то items(){}, перечисляющая страны,
+        одиночный item{...}, в нём - Text для вывода года выпуска Api.year(movie.release_date), по центру.
+        
+        В первом items(){...}: Если it.logo_path не null, то Image для вывода постера it.logo_path с помощью Api.image(...)
+        Во втором: Image для вывода флага страны it.iso_3166_1 с помощью Api.flag(...)
+        В обеих Image добавьте модификатор размера логотипа Modifier.size(64.dp)""".trimIndent())
+
 }
