@@ -44,7 +44,7 @@ class Api {
             rememberImagePainter("https://mad.lrmk.ru/medialibrary/small/$poster")
 
         @Composable fun bigImage(poster: String) =
-            rememberImagePainter("https://mad.lrmk.ru/medialibrary/image/$poster")
+            rememberImagePainter("https://mad.lrmk.ru/medialibrary/large/$poster")
 
         @Composable fun icon(weatherIcon: String?) =
             rememberImagePainter(weatherIcon?.let { "https://mad.lrmk.ru/weather/image/$it" })
